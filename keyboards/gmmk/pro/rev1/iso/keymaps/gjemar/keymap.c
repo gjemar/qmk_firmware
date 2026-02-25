@@ -7,14 +7,16 @@ enum layer_names {
     _WIN_CODE,
     _MAC_BASE,
     _MAC_CODE,
-    _GAME,
+    _GAME1,
+    _GAME2,
     _FN,
 };
 
 enum custom_keycodes {
     CK_WIN_BASE = SAFE_RANGE,
     CK_MAC_BASE,
-    CK_GAME,
+    CK_GAME1,
+    CK_GAME2,
 };
 
 // Sunset RGB colors (match your rgb_matrix_user.inc)
@@ -33,8 +35,8 @@ enum custom_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_WIN_BASE] = LAYOUT(
-        KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_PSCR,          KC_MUTE,
-        KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          KC_DEL,
+        KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_DEL,           KC_MUTE,
+        KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          KC_PSCR,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC,                   KC_PGUP,
         KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_NUHS, KC_ENT,           KC_PGDN,
         KC_LSFT, KC_NUBS, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT, KC_UP,   KC_END,
@@ -42,18 +44,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_MAC_BASE] = LAYOUT(
-        KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_PSCR,          KC_MUTE,
-        KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          KC_DEL,
+        KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_DEL,           KC_MUTE,
+        KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          KC_PSCR,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC,                   KC_PGUP,
         KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_NUHS, KC_ENT,           KC_PGDN,
         KC_LSFT, KC_NUBS, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT, KC_UP,   KC_END,
         KC_LCTL, KC_LALT, KC_LGUI,                            LT(_MAC_CODE, KC_SPC),                  KC_RGUI, MO(_FN), KC_RALT, KC_LEFT, KC_DOWN, KC_RGHT
     ),
 
-    // _GAME:
+    // _GAME1:
     // - Clean gaming layer (no key remaps)
     // - SPACE is forced to normal KC_SPC
-    [_GAME] = LAYOUT(
+    [_GAME1] = LAYOUT(
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,                   _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______,
+        _______, _______, _______,                            KC_SPC,                             _______, _______, _______, _______, _______, _______
+    ),
+
+    // _GAME2:
+    // - Clean gaming layer (no key remaps)
+    // - SPACE is forced to normal KC_SPC
+    [_GAME2] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,                   _______,
@@ -66,8 +80,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, KC_MYCM, KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD, KC_VOLU, _______, _______,          _______,
         _______, RM_TOGG, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, QK_BOOT,          CK_WIN_BASE,
         _______, _______, RM_VALU, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,                   CK_MAC_BASE,
-        _______, _______, RM_VALD, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          CK_GAME,
-        _______, _______, _______, RM_HUEU, _______, _______, _______, NK_TOGG, _______, _______, _______, _______,          _______, RM_NEXT, _______,
+        _______, _______, RM_VALD, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          CK_GAME1,
+        _______, _______, _______, RM_HUEU, _______, _______, _______, NK_TOGG, _______, _______, _______, _______,          _______, RM_NEXT, CK_GAME2,
         _______, _______, _______,                            _______,                            _______, _______, _______, RM_SPDD, RM_PREV, RM_SPDU
     ),
 
@@ -105,7 +119,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [_WIN_BASE] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
     [_MAC_BASE] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
-    [_GAME] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+    [_GAME1] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+    [_GAME2] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
     [_WIN_CODE] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
     [_MAC_CODE] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
     [_FN]   = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
@@ -113,8 +128,20 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 #endif
 
 static void switch_to_base_layer(uint8_t target_base_layer) {
-    layer_off(_GAME);
+    layer_off(_GAME1);
+    layer_off(_GAME2);
     layer_move(target_base_layer);
+}
+
+static void toggle_game_layer(uint8_t target_game_layer) {
+    bool already_active = layer_state_cmp(layer_state, target_game_layer);
+
+    layer_off(_GAME1);
+    layer_off(_GAME2);
+
+    if (!already_active) {
+        layer_on(target_game_layer);
+    }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -129,9 +156,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 switch_to_base_layer(_MAC_BASE);
             }
             return false;
-        case CK_GAME:
+        case CK_GAME1:
             if (record->event.pressed) {
-                layer_invert(_GAME);
+                toggle_game_layer(_GAME1);
+            }
+            return false;
+        case CK_GAME2:
+            if (record->event.pressed) {
+                toggle_game_layer(_GAME2);
             }
             return false;
     }
@@ -165,6 +197,20 @@ static void set_key_color_from_layer_keycode(uint8_t layer, uint16_t keycode, ui
     }
 }
 
+static void set_key_color_from_keypos(keypos_t pos, uint8_t r, uint8_t g, uint8_t b) {
+    uint8_t led = g_led_config.matrix_co[pos.row][pos.col];
+    if (led == NO_LED) {
+        return;
+    }
+
+    rgb_matrix_set_color(led, r, g, b);
+}
+
+static void set_key_hsv_from_keypos(keypos_t pos, uint8_t h, uint8_t s, uint8_t v) {
+    RGB rgb = hsv_to_rgb((HSV){ .h = h, .s = s, .v = v });
+    set_key_color_from_keypos(pos, rgb.r, rgb.g, rgb.b);
+}
+
 static void set_non_transparent_keys_color(uint8_t layer, uint8_t r, uint8_t g, uint8_t b) {
     for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
         for (uint8_t col = 0; col < MATRIX_COLS; col++) {
@@ -183,6 +229,42 @@ static void set_non_transparent_keys_color(uint8_t layer, uint8_t r, uint8_t g, 
     }
 }
 
+static void set_mode_key_wave(void) {
+    const keypos_t mode_win   = { .row = 6, .col = 5 }; // PSCR position
+    const keypos_t mode_mac   = { .row = 1, .col = 5 }; // PGUP position
+    const keypos_t mode_game1 = { .row = 2, .col = 5 }; // PGDN position
+    const keypos_t mode_game2 = { .row = 7, .col = 5 }; // END position
+
+    uint8_t hue = (uint8_t)(g_rgb_timer >> 4);
+    uint8_t val = rgb_matrix_get_val();
+
+    set_key_hsv_from_keypos(mode_win, hue + 0, 255, val);
+    set_key_hsv_from_keypos(mode_mac, hue + 64, 255, val);
+    set_key_hsv_from_keypos(mode_game1, hue + 128, 255, val);
+    set_key_hsv_from_keypos(mode_game2, hue + 192, 255, val);
+}
+
+static keypos_t get_active_mode_switch_keypos(void) {
+    const keypos_t mode_win   = { .row = 6, .col = 5 }; // PSCR position
+    const keypos_t mode_mac   = { .row = 1, .col = 5 }; // PGUP position
+    const keypos_t mode_game1 = { .row = 2, .col = 5 }; // PGDN position
+    const keypos_t mode_game2 = { .row = 7, .col = 5 }; // END position
+
+    if (layer_state_cmp(layer_state, _GAME2)) {
+        return mode_game2;
+    }
+
+    if (layer_state_cmp(layer_state, _GAME1)) {
+        return mode_game1;
+    }
+
+    if (layer_state_cmp(layer_state, _MAC_BASE) || layer_state_cmp(layer_state, _MAC_CODE)) {
+        return mode_mac;
+    }
+
+    return mode_win;
+}
+
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     uint8_t layer = get_highest_layer(layer_state);
 
@@ -193,29 +275,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             rgb_matrix_set_color(i, RGB_SUNSET_ORANGE);
         }
 
-        // 2) Highlight layer mode keys in purple: DEL, PGUP, PGDN
-        set_key_color_from_layer_keycode(_WIN_BASE, KC_DEL, RGB_SUNSET_PURPLE);
-        set_key_color_from_layer_keycode(_WIN_BASE, KC_PGUP, RGB_SUNSET_PURPLE);
-        set_key_color_from_layer_keycode(_WIN_BASE, KC_PGDN, RGB_SUNSET_PURPLE);
-
-        // 3) Highlight the QK_BOOT key in red
+        // 2) Highlight the QK_BOOT key in red
         set_key_color_from_layer_keycode(_FN, QK_BOOT, RGB_SIGNAL_RED);
-    }
-
-    // _WIN_BASE LAYER
-    if (layer == _WIN_BASE) {
-        set_key_color_from_layer_keycode(_WIN_BASE, KC_W, RGB_ACTIVE_LAYER);
-    }
-
-    // _MAC_BASE LAYER
-    if (layer == _MAC_BASE) {
-        set_key_color_from_layer_keycode(_WIN_BASE, KC_M, RGB_ACTIVE_LAYER);
-    }
-
-    // _GAME LAYER
-    if (layer == _GAME) {
-        // G key indicates GAME mode
-        set_key_color_from_layer_keycode(_WIN_BASE, KC_G, RGB_ACTIVE_LAYER);
     }
 
     // _WIN_CODE LAYER
@@ -228,8 +289,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // 2) Highlight keys that are actually mapped on the _WIN_CODE layer
         set_non_transparent_keys_color(_WIN_CODE, RGB_SUNSET_ORANGE);
 
-        // 3) W key indicates _WIN_CODE mode
-        set_key_color_from_layer_keycode(_WIN_BASE, KC_W, RGB_ACTIVE_LAYER);
     }
 
     // _MAC_CODE LAYER
@@ -242,9 +301,11 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // 2) Highlight keys that are actually mapped on the _MAC_CODE layer
         set_non_transparent_keys_color(_MAC_CODE, RGB_SUNSET_ORANGE);
 
-        // 3) M key indicates _MAC_CODE mode
-        set_key_color_from_layer_keycode(_WIN_BASE, KC_M, RGB_ACTIVE_LAYER);
     }
+
+    // Mode switch keys always run a color wave, then active mode key is forced green.
+    set_mode_key_wave();
+    set_key_color_from_keypos(get_active_mode_switch_keypos(), RGB_ACTIVE_LAYER);
 
     return true;
 }
