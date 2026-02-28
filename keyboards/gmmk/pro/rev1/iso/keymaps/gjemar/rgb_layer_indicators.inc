@@ -18,9 +18,10 @@ static const keypos_t MODE_KEYS[MODE_KEY_COUNT] = {
 #define RGB_SUNSET_PURPLE 70,  0, 190
 #define RGB_SUNSET_ORANGE 255, 120, 0
 #define RGB_SIGNAL_RED    255, 0,   0
-#define RGB_ACTIVE_LAYER  0,   255, 0
-
-static const uint8_t MODE_WAVE_OFFSETS[MODE_KEY_COUNT] = { 0, 64, 128, 192 };
+#define RGB_MODE_WIN      RGB_SUNSET_ORANGE
+#define RGB_MODE_MAC      RGB_SUNSET_PURPLE
+#define RGB_MODE_GAME1    0,   255, 0
+#define RGB_MODE_GAME2    RGB_SIGNAL_RED
 
 // Enable RGB and select the custom default effect on boot.
 void keyboard_post_init_user(void) {
@@ -56,12 +57,6 @@ static void set_key_color_from_keypos(keypos_t pos, uint8_t r, uint8_t g, uint8_
     rgb_matrix_set_color(led, r, g, b);
 }
 
-// Convert HSV to RGB and apply to a single key position.
-static void set_key_hsv_from_keypos(keypos_t pos, uint8_t h, uint8_t s, uint8_t v) {
-    RGB rgb = hsv_to_rgb((HSV){ .h = h, .s = s, .v = v });
-    set_key_color_from_keypos(pos, rgb.r, rgb.g, rgb.b);
-}
-
 // Color all non-transparent keys defined on a layer.
 static void set_non_transparent_keys_color(uint8_t layer, uint8_t r, uint8_t g, uint8_t b) {
     for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
@@ -88,37 +83,27 @@ static void set_led_range_color(uint8_t led_min, uint8_t led_max, uint8_t r, uin
     }
 }
 
-// Apply the standard code-layer palette (purple base, orange mapped keys).
-static void set_code_layer_colors(uint8_t layer, uint8_t led_min, uint8_t led_max) {
-    set_led_range_color(led_min, led_max, RGB_SUNSET_PURPLE);
-    set_non_transparent_keys_color(layer, RGB_SUNSET_ORANGE);
+// Apply code-layer colors with independent background and active-key palettes.
+static void set_code_layer_colors(uint8_t layer, uint8_t led_min, uint8_t led_max,
+                                  uint8_t base_r, uint8_t base_g, uint8_t base_b,
+                                  uint8_t active_r, uint8_t active_g, uint8_t active_b) {
+    set_led_range_color(led_min, led_max, base_r, base_g, base_b);
+    set_non_transparent_keys_color(layer, active_r, active_g, active_b);
 }
 
-// Animate rainbow wave colors on the mode-switch keys.
-static void set_mode_key_wave(void) {
-    uint8_t hue = (uint8_t)(g_rgb_timer >> 4);
-    uint8_t val = rgb_matrix_get_val();
-
+// Set one color on all 4 mode-switch keys.
+static void set_all_mode_keys_color(uint8_t r, uint8_t g, uint8_t b) {
     for (uint8_t i = 0; i < MODE_KEY_COUNT; i++) {
-        set_key_hsv_from_keypos(MODE_KEYS[i], hue + MODE_WAVE_OFFSETS[i], 255, val);
+        set_key_color_from_keypos(MODE_KEYS[i], r, g, b);
     }
 }
 
-// Return the mode key position that represents the active mode.
-static keypos_t get_active_mode_switch_keypos(void) {
-    if (layer_state_cmp(layer_state, _GAME2)) {
-        return MODE_KEYS[MODE_KEY_GAME2_IDX];
-    }
-
-    if (layer_state_cmp(layer_state, _GAME1)) {
-        return MODE_KEYS[MODE_KEY_GAME1_IDX];
-    }
-
-    if (layer_state_cmp(layer_state, _MAC_BASE) || layer_state_cmp(layer_state, _MAC_CODE)) {
-        return MODE_KEYS[MODE_KEY_MAC_IDX];
-    }
-
-    return MODE_KEYS[MODE_KEY_WIN_IDX];
+// _FN layer uses one dedicated color per mode-switch key.
+static void set_fn_mode_key_colors(void) {
+    set_key_color_from_keypos(MODE_KEYS[MODE_KEY_WIN_IDX], RGB_MODE_WIN);     // KC_PSCR
+    set_key_color_from_keypos(MODE_KEYS[MODE_KEY_MAC_IDX], RGB_MODE_MAC);     // KC_PGUP
+    set_key_color_from_keypos(MODE_KEYS[MODE_KEY_GAME1_IDX], RGB_MODE_GAME1); // KC_PGDN
+    set_key_color_from_keypos(MODE_KEYS[MODE_KEY_GAME2_IDX], RGB_MODE_GAME2); // KC_END
 }
 
 // Apply per-layer indicator colors on top of the base RGB effect.
@@ -136,17 +121,26 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
     // _WIN_CODE LAYER
     if (layer == _WIN_CODE) {
-        set_code_layer_colors(_WIN_CODE, led_min, led_max);
+        set_code_layer_colors(_WIN_CODE, led_min, led_max, RGB_SUNSET_ORANGE, RGB_SUNSET_PURPLE);
     }
 
     // _MAC_CODE LAYER
     if (layer == _MAC_CODE) {
-        set_code_layer_colors(_MAC_CODE, led_min, led_max);
+        set_code_layer_colors(_MAC_CODE, led_min, led_max, RGB_SUNSET_PURPLE, RGB_SUNSET_ORANGE);
     }
 
-    // Mode switch keys always run a color wave, then active mode key is forced green.
-    set_mode_key_wave();
-    set_key_color_from_keypos(get_active_mode_switch_keypos(), RGB_ACTIVE_LAYER);
+    // KC_PSCR, KC_PGUP, KC_PGDN, KC_END colors by active layer.
+    if (layer == _FN) {
+        set_fn_mode_key_colors();
+    } else if (layer == _GAME1) {
+        set_all_mode_keys_color(RGB_MODE_GAME1);
+    } else if (layer == _GAME2) {
+        set_all_mode_keys_color(RGB_MODE_GAME2);
+    } else if (layer == _MAC_BASE || layer == _MAC_CODE) {
+        set_all_mode_keys_color(RGB_MODE_MAC);
+    } else {
+        set_all_mode_keys_color(RGB_MODE_WIN);
+    }
 
     return true;
 }
